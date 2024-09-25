@@ -5,51 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Home Control</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .switch-container { margin: 20px; }
-        label { font-size: 1.2em; }
-        .status { margin-top: 10px; font-size: 1.1em; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <div class="switch-container">
-        <label>
-            <input type="checkbox" id="deviceSwitch">
-            Toggle Lights
-        </label>
-        <div id="status" class="status">Lights are off</div>
-    </div>
+    <h1>Smart Home Control</h1>
+    <button onclick="controlDevice('on')">Turn Lights On</button>
+    <button onclick="controlDevice('off')">Turn Lights Off</button>
+    <div id="status"></div>
 
     <script>
-        const switchInput = document.getElementById('deviceSwitch');
-        const statusText = document.getElementById('status');
-        
         function controlDevice(action) {
-            fetch(`https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-${action}`, {
+            const url = `https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-${action}`;
+            
+            fetch(url, {
                 method: 'POST'
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    return response.text().then(errorText => {
+                        throw new Error(`Network response was not ok: ${errorText}`);
+                    });
                 }
-                return response.json();
+                return response.text();
             })
             .then(data => {
-                statusText.textContent = action === 'on' ? 'Lights are on' : 'Lights are off';
+                console.log('Response data:', data);
+                document.getElementById('status').textContent = action === 'on' ? 'Lights are on' : 'Lights are off';
             })
             .catch(error => {
                 console.error('Error:', error);
-                statusText.textContent = 'Failed to toggle lights';
+                document.getElementById('status').textContent = 'Failed to toggle lights';
             });
         }
-
-        switchInput.addEventListener('change', () => {
-            if (switchInput.checked) {
-                controlDevice('on');
-            } else {
-                controlDevice('off');
-            }
-        });
     </script>
 </body>
 </html>
