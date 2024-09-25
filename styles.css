@@ -1,77 +1,88 @@
-  /* From Uiverse.io by Admin12121 */ 
-.switch-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-  height: 55px;
+/* Card Styling */
+.card {
+  width: 190px;
+  height: 254px;
+  background: white;
+  border-radius: 10px;
+  transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.switch-button .switch-outer {
-  height: 100%;
-  background: #252532;
-  width: 115px;
-  border-radius: 165px;
-  box-shadow: inset 0px 5px 10px 0px #16151c, 0px 3px 6px -2px #403f4e;
-  border: 1px solid #32303e;
-  padding: 6px;
-  box-sizing: border-box;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+.shadow {
+  box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),
+              0 0  0 2px rgb(190, 190, 190),
+              0.3em 0.3em 1em rgba(0,0,0,0.3);
 }
 
-.switch-button .switch-outer input[type="checkbox"] {
-  opacity: 0;
-  appearance: none;
+/* Toggle Switch Styling */
+.toggle-switch {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 50px;
+  --light: #d8dbe0;
+  --dark: #28292c;
+  --link: rgb(27, 129, 112);
+  --link-hover: rgb(24, 94, 82);
 }
 
-.switch-button .switch-outer .button-toggle {
-  height: 42px;
-  width: 42px;
-  background: linear-gradient(#3b3a4e, #272733);
-  border-radius: 100%;
-  box-shadow: inset 0px 5px 4px 0px #424151, 0px 4px 15px 0px #0f0e17;
-  position: relative;
-  z-index: 2;
-  transition: left 0.3s ease-in;
-  left: 0;
+.switch-label {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  background-color: var(--dark);
+  border-radius: 25px;
+  cursor: pointer;
+  border: 3px solid var(--dark);
 }
 
-.switch-button .switch-outer input[type="checkbox"]:checked + .button .button-toggle {
-  left: 58%;
+.checkbox {
+  position: absolute;
+  display: none;
 }
 
-.switch-button .switch-outer .button {
+.slider {
+  position: absolute;
   width: 100%;
   height: 100%;
-  display: flex;
-  position: relative;
-  justify-content: space-between;
+  border-radius: 25px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
 
-.switch-button .switch-outer .button-indicator {
-  height: 25px;
+.checkbox:checked ~ .slider {
+  background-color: var(--light);
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
   width: 25px;
-  top: 50%;
-  transform: translateY(-50%);
+  height: 25px;
   border-radius: 50%;
-  border: 3px solid #ef565f;
-  box-sizing: border-box;
-  right: 10px;
-  position: relative;
+  -webkit-box-shadow: inset 12px -4px 0px 0px var(--light);
+  box-shadow: inset 12px -4px 0px 0px var(--light);
+  background-color: var(--dark);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
 
-@keyframes indicator {
-  30% {
-    opacity: 0;
-  }
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    border: 3px solid #60d480;
-    left: -68%;
-  }
+.checkbox:checked ~ .slider::before {
+  -webkit-transform: translateX(50px);
+  -ms-transform: translateX(50px);
+  transform: translateX(50px);
+  background-color: var(--dark);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* Center the card and toggle switch */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
