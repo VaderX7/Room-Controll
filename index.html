@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Control</title>
+</head>
+<body>
+    <h1>Smart Home Control</h1>
+    <button onclick="controlDevice('on')">Turn On</button>
+    <button onclick="controlDevice('off')">Turn Off</button>
+    
+    <script>
+        function controlDevice(action) {
+            fetch(`https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-${action}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => alert('Request sent!'))
+            .catch(error => alert('Error: ' + error));
+        }
+    </script>
+</body>
+</html>
