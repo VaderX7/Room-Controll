@@ -4,11 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Home Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #onButton {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #offButton {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
     <h1>Smart Home Control</h1>
-    <button onclick="toggleLights('room-on')">Turn ON</button>
-    <button onclick="toggleLights('room-off')">Turn OFF</button>
+    <button id="onButton" onclick="toggleLights('room-on')">Turn ON</button>
+    <button id="offButton" onclick="toggleLights('room-off')">Turn OFF</button>
     <p id="status"></p>
 
     <script>
