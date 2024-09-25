@@ -1,21 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minimal Toggle Card</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Device Control</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <div class="card shadow">
-      <div class="toggle-switch">
-        <label class="switch-label">
-          <input type="checkbox" class="checkbox">
-          <span class="slider"></span>
-        </label>
-      </div>
+    <div class="container">
+        <div class="card shadow">
+            <div class="toggle-switch">
+                <label class="switch-label">
+                    <input type="checkbox" class="checkbox" id="toggleSwitch">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <script>
+        document.getElementById('toggleSwitch').addEventListener('change', function() {
+            if (this.checked) {
+                fetch('https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-on', { method: 'POST' })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok.');
+                        console.log('Room lights turned on');
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                fetch('https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-off', { method: 'POST' })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok.');
+                        console.log('Room lights turned off');
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
 </body>
 </html>
