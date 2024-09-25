@@ -25,13 +25,15 @@
 </head>
 <body>
     <h1>Smart Home Control</h1>
-    <button onclick="controlDevice('on')">Turn Lights On</button>
-    <button onclick="controlDevice('off')">Turn Lights Off</button>
+    <button onclick="toggleLights('on')">Turn Lights On</button>
+    <button onclick="toggleLights('off')">Turn Lights Off</button>
     <div id="status"></div>
 
     <script>
-        function controlDevice(action) {
-            const url = `https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-${action}`;
+        function toggleLights(action) {
+            const url = action === 'on'
+                ? 'https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-on'
+                : 'https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-off';
             
             fetch(url, {
                 method: 'POST'
@@ -45,8 +47,8 @@
                 return response.text();
             })
             .then(data => {
-                console.log('Response data:', data);
-                document.getElementById('status').textContent = action === 'on' ? 'Lights are on' : 'Lights are off';
+                console.log('Response:', data);
+                document.getElementById('status').textContent = `Lights are ${action === 'on' ? 'on' : 'off'}`;
             })
             .catch(error => {
                 console.error('Error:', error);
