@@ -5,59 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Home Control</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            border-radius: 50%;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-        }
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
+        body { font-family: Arial, sans-serif; }
+        .switch-container { margin: 20px; }
+        label { font-size: 1.2em; }
+        .status { margin-top: 10px; font-size: 1.1em; }
     </style>
 </head>
 <body>
-    <h1>Smart Home Control</h1>
-    <label class="switch">
-        <input type="checkbox" id="deviceSwitch">
-        <span class="slider"></span>
-    </label>
-    <p id="status">Lights are off</p>
+    <div class="switch-container">
+        <label>
+            <input type="checkbox" id="deviceSwitch">
+            Toggle Lights
+        </label>
+        <div id="status" class="status">Lights are off</div>
+    </div>
 
     <script>
         const switchInput = document.getElementById('deviceSwitch');
@@ -67,11 +28,19 @@
             fetch(`https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-${action}`, {
                 method: 'POST'
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 statusText.textContent = action === 'on' ? 'Lights are on' : 'Lights are off';
             })
-            .catch(error => alert('Error: ' + error));
+            .catch(error => {
+                console.error('Error:', error);
+                statusText.textContent = 'Failed to toggle lights';
+            });
         }
 
         switchInput.addEventListener('change', () => {
