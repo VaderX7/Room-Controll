@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Control</title>
+</head>
+<body>
+    <h1>Smart Home Control</h1>
+    <button onclick="toggleLights('room-on')">Turn ON</button>
+    <button onclick="toggleLights('room-off')">Turn OFF</button>
+    <p id="status"></p>
 
+    <script>
+        function toggleLights(action) {
+            const onUrl = "https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-on";
+            const offUrl = "https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-off";
+            
+            const url = action === 'room-on' ? onUrl : offUrl;
+            
+            fetch(url, { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('status').textContent = `Lights are ${action === 'room-on' ? 'ON' : 'OFF'}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('status').textContent = 'Failed to toggle lights';
+            });
+        }
+    </script>
+</body>
+</html>
