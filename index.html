@@ -16,28 +16,50 @@
             color: #333;
         }
 
-        button {
-            padding: 15px 30px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            margin: 10px;
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
         }
 
-        #onButton {
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
             background-color: #28a745;
-            color: white;
         }
 
-        #offButton {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        button:hover {
-            opacity: 0.9;
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
 
         #status {
@@ -48,17 +70,23 @@
 </head>
 <body>
     <h1>Smart Home Control</h1>
-    <button id="onButton" onclick="toggleLights('room-on')">Turn ON</button>
-    <button id="offButton" onclick="toggleLights('room-off')">Turn OFF</button>
+    
+    <!-- Toggle Switch -->
+    <label class="switch">
+        <input type="checkbox" id="lightToggle" onclick="toggleLights()">
+        <span class="slider"></span>
+    </label>
+
     <p id="status"></p>
 
     <script>
-        function toggleLights(action) {
+        function toggleLights() {
+            const isChecked = document.getElementById("lightToggle").checked;
             const onUrl = "https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-on";
             const offUrl = "https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=room-off";
             
-            const url = action === 'room-on' ? onUrl : offUrl;
-            
+            const url = isChecked ? onUrl : offUrl;
+
             fetch(url, { method: 'GET' })
             .then(response => {
                 if (!response.ok) {
@@ -67,7 +95,7 @@
                 return response.text();
             })
             .then(data => {
-                document.getElementById('status').textContent = `Lights are ${action === 'room-on' ? 'ON' : 'OFF'}`;
+                document.getElementById('status').textContent = `Lights are ${isChecked ? 'ON' : 'OFF'}`;
             })
             .catch(error => {
                 console.error('Error:', error);
