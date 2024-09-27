@@ -8,8 +8,8 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #16161d   ; /* Dark gray background */
-            color: #f5f5f5; /* Light color for text to contrast with the dark background */
+            background-color: #000000; /* Dark background color */
+            color: #ffffff; /* Light text color for contrast */
             text-align: center;
             margin: 0;
             padding: 0;
@@ -17,10 +17,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column; /* Align items vertically */
         }
 
         h1 {
-            color: #f5f5f5; /* Light color for heading */
+            color: #ffffff; /* Light color for the heading */
             margin-bottom: 20px;
         }
 
@@ -33,7 +34,7 @@
         .switch-label {
             font-size: 18px;
             margin-bottom: 10px;
-            color: #f5f5f5; /* Light color for switch label */
+            color: #aaaaaa; /* Slightly lighter text for the switch label */
         }
 
         .switch {
@@ -56,7 +57,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: #555555; /* Dark gray for the slider */
             transition: .4s;
             border-radius: 20px;
         }
@@ -68,13 +69,13 @@
             width: 32px;
             left: 4px;
             bottom: 4px;
-            background-color: white;
+            background-color: #ffffff; /* White knob */
             transition: .4s;
             border-radius: 50%;
         }
 
         input:checked + .slider {
-            background-color: #4caf50;
+            background-color: #4caf50; /* Green when checked */
         }
 
         input:checked + .slider:before {
@@ -84,12 +85,11 @@
         .status {
             margin-top: 20px;
             font-size: 18px;
-            color: #f5f5f5; /* Light color for status */
+            color: #aaaaaa; /* Light color for status text */
         }
 
-        /* From Uiverse.io by Voxybuns */ 
+        /* General Button Styles */
         button {
-            /* Variables */
             --button_radius: 0.75em;
             --button_color: #e8e8e8;
             --button_outline_color: #000000;
@@ -99,7 +99,6 @@
             cursor: pointer;
             border-radius: var(--button_radius);
             background: var(--button_outline_color);
-            color: var(--button_color);
         }
 
         .button_top {
@@ -115,16 +114,37 @@
         }
 
         button:hover .button_top {
-            /* Pull the button upwards when hovered */
             transform: translateY(-0.33em);
         }
 
         button:active .button_top {
-            /* Push the button downwards when pressed */
             transform: translateY(0);
         }
 
+        /* Specific Color Button Styles */
+        .button_white .button_top {
+            background: #ffffff;
+            color: #000000;
+            border-color: #000000;
+        }
+
+        .button_aqua .button_top {
+            background: #00ffff;
+            color: #000000;
+            border-color: #000000;
+        }
+
+        .button_green .button_top {
+            background: #00ff00;
+            color: #000000;
+            border-color: #000000;
+        }
+
+        /* Align color control buttons horizontally */
         .color-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between buttons */
             margin-top: 20px;
         }
     </style>
@@ -138,20 +158,19 @@
             <span class="slider"></span>
         </label>
         <p id="status" class="status">Lights are OFF</p>
-
-        <div class="switch-label">Colour Control</div>
+        
+        <h2>Color Control</h2>
         <div class="color-controls">
-            <button onclick="setColor('white')">
-                <span class="button_top">White</span>
+            <button class="button button_white" onclick="changeColor('https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=white')">
+                <span class="button_top">WHITE</span>
             </button>
-            <button onclick="setColor('red')">
-                <span class="button_top">Red</span>
+
+            <button class="button button_aqua" onclick="changeColor('https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=aqua')">
+                <span class="button_top">AQUA</span>
             </button>
-            <button onclick="setColor('green')">
-                <span class="button_top">Green</span>
-            </button>
-            <button onclick="setColor('blue')">
-                <span class="button_top">Blue</span>
+
+            <button class="button button_green" onclick="changeColor('https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=green')">
+                <span class="button_top">GREEN</span>
             </button>
         </div>
     </div>
@@ -180,9 +199,8 @@
             });
         }
 
-        function setColor(color) {
-            const colorUrl = `https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=${color}`;
-            fetch(colorUrl, { method: 'GET' })
+        function changeColor(url) {
+            fetch(url, { method: 'GET' })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -190,7 +208,7 @@
                 return response.text();
             })
             .then(data => {
-                console.log(`Color set to ${color}`);
+                console.log('Color changed successfully');
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -199,4 +217,3 @@
     </script>
 </body>
 </html>
-s
