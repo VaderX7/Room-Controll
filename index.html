@@ -3,18 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Smart Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Smart Device Control Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div class="card shadow">
-        <!-- Card content -->
-        <div class="toggle-switch">
-            <label class="switch-label">
-                <input type="checkbox" class="checkbox">
-                <span class="slider"></span>
-            </label>
-        </div>
+    <div class="container">
+        <h1>Control Your Smart Devices</h1>
+        <button class="btn" id="setWhite">Set Lights to White</button>
     </div>
+
+    <script>
+        document.getElementById('setWhite').addEventListener('click', function() {
+            fetch('https://api-v2.voicemonkey.io/trigger?token=fcaeb2718008c53ba2f8a20101584b4c_ab639392345617c7e8df5b3ee44ef7a1&device=white')
+                .then(response => {
+                    if (response.ok) {
+                        alert('Lights set to white successfully!');
+                    } else {
+                        alert('Failed to set lights to white.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred.');
+                });
+        });
+    </script>
 </body>
 </html>
